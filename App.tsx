@@ -1,11 +1,30 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
-import PlayerList from './src/components/PlayerList';
+import PlayerList, { IPlayer } from './src/components/PlayerList';
 
 export default function App() {
 
-  const [players, setPlayers] = useState(["Elias", "Shu", "Sean"])
+  const [players, setPlayers] = useState<IPlayer[]>([
+    {
+      id: 1,
+      name: "Elias",
+      points: 23,
+      balance: 10
+    },
+    {
+      id: 2,
+      name: "Sean",
+      points: 0,
+      balance: -20
+    },
+    {
+      id: 3,
+      name: "Shu",
+      points: 18,
+      balance: 10
+    },
+  ])
 
   return (
     <View style={styles.container}>
