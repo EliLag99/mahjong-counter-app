@@ -1,10 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
+import PlayerList from './src/components/PlayerList';
 
 export default function App() {
+
+  const [players, setPlayers] = useState(["Elias", "Shu", "Sean"])
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Text>Mahjong Counter App</Text>
+      <Text>Players</Text>
+      <PlayerList players={players}/>
       <StatusBar style="auto" />
     </View>
   );
@@ -13,7 +20,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#999',
     alignItems: 'center',
     justifyContent: 'center',
   },
