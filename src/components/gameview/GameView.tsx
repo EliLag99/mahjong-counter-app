@@ -6,6 +6,8 @@ import { Modal } from "react-native-paper";
 import { Formik } from "formik";
 import PlayerEditingForm from "./PlayerEditingForm";
 import generatePlayer from "../../util/defaultPlayer";
+import { defaultRound } from "../../util/defaultRound";
+import RoundEditingForm from "./RoundEditingForm";
 
 export default function GameView(){
     const [players, setPlayers] = useState<IPlayer[]>([
@@ -32,21 +34,29 @@ export default function GameView(){
 
     const [editingPlayer, setEditingPlayer] = useState<boolean>(false)
     const [playerToEdit, setPlayerToEdit] = useState<IPlayer | null>(null)
+    
+    const [editingRound, setEditingRound] = useState<boolean>(false)
+    const [roundToEdit, setRoundToEdit] = useState<IGame | null>(null)
 
-    function editPlayer(player: IPlayer){
+    const nextRoundID = games.length > 0 ? games[games.length - 1].id + 1 : 1
+
+    function handleEditPlayer(player: IPlayer){
         setPlayerToEdit(player)
         setEditingPlayer(true)
     }
 
-    function handleSaveEdits(editedPlayer: IPlayer){
+    function handleSavePlayerEdits(editedPlayer: IPlayer){
 
         const newPlayers = [...players].map((player) => {
             return editedPlayer.id === player.id ? editedPlayer : player
         })
-        console.log(newPlayers)
         setPlayers(newPlayers)
 
         setEditingPlayer(false)
+    }
+
+    function handleAddRound(){
+        setEditingRound(true)
     }
 
     return(
@@ -54,8 +64,8 @@ export default function GameView(){
             <View style={{ width: "100%", backgroundColor: "white", marginTop: 20, padding: 15, borderRadius: 10 }}>
                 <Text style={{width: "100%", fontWeight: "bold", fontSize: 20 , textAlign: "center"}}>Mahjong Counter App</Text>
             </View>
-            <PlayerList players={players} editPlayer={editPlayer}/>
-            <GamesList players={players} games={games} />
+            <PlayerList players={players} editPlayer={handleEditPlayer}/>
+            <GamesList players={players} games={games} addGame={()=>setEditingRound(true)}/>
             {playerToEdit &&
                 <Formik
                 initialValues={playerToEdit}
@@ -63,10 +73,19 @@ export default function GameView(){
                 enableReinitialize
                 >
                     <Modal visible={editingPlayer} onDismiss={() => setEditingPlayer(false)} contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}>
-                        <PlayerEditingForm handleSubmit={handleSaveEdits}/>
+                        <PlayerEditingForm handleSubmit={handleSavePlayerEdits}/>
                     </Modal>
                 </Formik>
             }
+            <Formik
+                initialValues={roundToEdit ?? defaultRound(nextRoundID)}
+                onSubmit={() => { }}
+                enableReinitialize
+            >
+                <Modal visible={editingRound} onDismiss={() => setEditingRound(false)} contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}>
+                    <RoundEditingForm handleSubmit={()=>{setEditingRound(false)}} players={players}/>
+                </Modal>
+            </Formik>
         </>
     )
 }

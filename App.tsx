@@ -1,13 +1,16 @@
 import { Platform, StyleSheet, StatusBar } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import GameView from './src/components/gameview/GameView';
+import { Provider } from 'react-native-paper';
 
 export default function App() {
 
   return (
-    <SafeAreaProvider style={styles.AndroidSafeArea}>
-      <GameView/>
-    </SafeAreaProvider>
+    <Provider>
+      <SafeAreaProvider style={styles.AndroidSafeArea}>
+        <GameView/>
+      </SafeAreaProvider>
+    </Provider>
   );
 }
 

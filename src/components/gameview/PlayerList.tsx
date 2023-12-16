@@ -34,7 +34,7 @@ export default function PlayerList(props: IPlayerListProps){
                         <DataTable.Cell>{player.name}</DataTable.Cell>
                         <DataTable.Cell numeric>{player.points}</DataTable.Cell>
                         <DataTable.Cell numeric>{player.balance}</DataTable.Cell>
-                        <DataTable.Cell style={{justifyContent: "center"}}>
+                        <DataTable.Cell style={{justifyContent: "flex-end"}}>
                                 <IconButton icon="human-edit" onPress={()=>editPlayer(player)}/>
                         </DataTable.Cell>
                     </DataTable.Row>
