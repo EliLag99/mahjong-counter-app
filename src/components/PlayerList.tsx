@@ -18,7 +18,7 @@ export default function PlayerList(props: IPlayerListProps){
     const {players} = props
 
     return(
-        <DataTable>
+        <DataTable style={{width: "90%", backgroundColor: "white", marginTop: 10, borderRadius: 10}}>
             <DataTable.Header>
                 <DataTable.Title>Player</DataTable.Title>
                 <DataTable.Title numeric>Points</DataTable.Title>

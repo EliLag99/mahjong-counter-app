@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { Platform, StyleSheet, Text, StatusBar, View, SafeAreaView } from 'react-native';
 import PlayerList, { IPlayer } from './src/components/PlayerList';
 
 export default function App() {
@@ -24,23 +23,36 @@ export default function App() {
       points: 18,
       balance: 10
     },
+    {
+      id: 4,
+      name: "Harry",
+      points: 10,
+      balance: 0
+    },
   ])
 
   return (
-    <View style={styles.container}>
-      <Text>Mahjong Counter App</Text>
-      <Text>Players</Text>
+    <SafeAreaView style={styles.AndroidSafeArea}>
+      <Text style={{}}>Mahjong Counter App</Text>
       <PlayerList players={players}/>
-      <StatusBar style="auto" />
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  AndroidSafeArea: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: "#BBB",
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+  },
   container: {
     flex: 1,
+    padding: 10,
     backgroundColor: '#999',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
   },
 });
