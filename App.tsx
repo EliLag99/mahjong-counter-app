@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Platform, StyleSheet, Text, StatusBar, View, SafeAreaView } from 'react-native';
 import PlayerList, { IPlayer } from './src/components/PlayerList';
+import GamesList, { IGame } from './src/components/GamesList';
 
 export default function App() {
 
@@ -31,10 +32,28 @@ export default function App() {
     },
   ])
 
+  const [games, setGames] = useState<IGame[]>([
+    {
+      id: 1,
+      winnerId: 1,
+      points: 3,
+      loserId: null
+    },
+    {
+      id: 2,
+      winnerId: 1,
+      points: 1,
+      loserId: 3
+    }
+  ])
+
   return (
     <SafeAreaView style={styles.AndroidSafeArea}>
-      <Text style={{}}>Mahjong Counter App</Text>
+      <View style={{ width: "100%", backgroundColor: "white", marginTop: 20, padding: 15, borderRadius: 10 }}>
+        <Text style={{width: "100%", fontWeight: "bold", fontSize: 20 , textAlign: "center"}}>Mahjong Counter App</Text>
+      </View>
       <PlayerList players={players}/>
+      <GamesList players={players} games={games}/>
     </SafeAreaView>
   );
 }
