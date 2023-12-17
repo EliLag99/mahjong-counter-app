@@ -20,12 +20,12 @@ export default function PlayerEditingForm(props: IEditingFormProps) {
             <TextInput
                 label="Points"
                 value={String(formik.values.points)}
-                onChange={(e: any) => formik.setFieldValue("name", Number(e.nativeEvent.text))}
+                onChange={(e: any) => formik.setFieldValue("points", Number(e.nativeEvent.text))}
             />
             <TextInput
                 label="Balance"
                 value={String(formik.values.balance)}
-                onChange={(e: any) => formik.setFieldValue("name", Number(e.nativeEvent.text))}
+                onChange={(e: any) => formik.setFieldValue("balance", Number(e.nativeEvent.text))}
             />
             <Button title="Submit" onPress={() => props.handleSubmit(formik.values)} />
         </View>

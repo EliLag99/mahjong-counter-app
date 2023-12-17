@@ -3,15 +3,16 @@ import { IPlayer } from "./PlayerList"
 
 export interface IGame {
     id: number,
-    winnerId: number | null,
-    points: number | null,
-    loserId: number | null
+    winnerId: number | undefined,
+    points: number | undefined,
+    loserId: number | undefined
 }
 
 export interface IGamesListProps {
     games: IGame[]
     players: IPlayer[]
-    addGame:()=>void
+    handleAddRound:()=>void
+    handleDeleteRound:(id: number)=>void
 }
 
 
@@ -32,7 +33,7 @@ export default function GamesList(props: IGamesListProps) {
             </DataTable.Header>
 
             {games.map((game) => {
-                if(game.points === null) return
+                if(game.points === undefined) return
                 const balanceMultiplier = 1 //ASSUMES 1 dollar per point
                 const winningsPerPlayer = Math.pow(2, game.loserId ? game.points - 1 : game.points) * balanceMultiplier
                 const winnerBalance = game.loserId ? winningsPerPlayer * 4 : winningsPerPlayer * 3
@@ -59,12 +60,12 @@ export default function GamesList(props: IGamesListProps) {
                             <IconButton icon="note-edit" />
                         </DataTable.Cell>
                         <DataTable.Cell style={{ justifyContent: "flex-end" }}>
-                            <IconButton icon="delete" />
+                            <IconButton icon="delete" onPress={()=>props.handleDeleteRound(game.id)}/>
                         </DataTable.Cell>
                     </DataTable.Row>
                 )
             })}
-            <Button onPress={props.addGame}>Log New Round</Button>
+            <Button onPress={props.handleAddRound}>Log New Round</Button>
         </DataTable>
     )
 }

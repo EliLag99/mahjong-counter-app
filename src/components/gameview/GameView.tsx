@@ -9,7 +9,7 @@ import generatePlayer from "../../util/defaultPlayer";
 import { defaultRound } from "../../util/defaultRound";
 import RoundEditingForm from "./RoundEditingForm";
 
-export default function GameView(){
+export default function GameView() {
     const [players, setPlayers] = useState<IPlayer[]>([
         generatePlayer(1),
         generatePlayer(2),
@@ -22,7 +22,7 @@ export default function GameView(){
             id: 1,
             winnerId: 1,
             points: 3,
-            loserId: null
+            loserId: undefined
         },
         {
             id: 2,
@@ -34,18 +34,18 @@ export default function GameView(){
 
     const [editingPlayer, setEditingPlayer] = useState<boolean>(false)
     const [playerToEdit, setPlayerToEdit] = useState<IPlayer | null>(null)
-    
+
     const [editingRound, setEditingRound] = useState<boolean>(false)
     const [roundToEdit, setRoundToEdit] = useState<IGame | null>(null)
 
     const nextRoundID = games.length > 0 ? games[games.length - 1].id + 1 : 1
 
-    function handleEditPlayer(player: IPlayer){
+    function handleEditPlayer(player: IPlayer) {
         setPlayerToEdit(player)
         setEditingPlayer(true)
     }
 
-    function handleSavePlayerEdits(editedPlayer: IPlayer){
+    function handleSavePlayerEdits(editedPlayer: IPlayer) {
 
         const newPlayers = [...players].map((player) => {
             return editedPlayer.id === player.id ? editedPlayer : player
@@ -55,25 +55,35 @@ export default function GameView(){
         setEditingPlayer(false)
     }
 
-    function handleAddRound(){
-        setEditingRound(true)
+    function handleAddRound(round: IGame) {
+        setGames([...games, round])
+        setEditingRound(false)
     }
 
-    return(
+    function handleDeleteRound(roundId: number) {
+        setGames(games.filter(game => game.id !== roundId))
+    }
+
+    return (
         <>
             <View style={{ width: "100%", backgroundColor: "white", marginTop: 20, padding: 15, borderRadius: 10 }}>
-                <Text style={{width: "100%", fontWeight: "bold", fontSize: 20 , textAlign: "center"}}>Mahjong Counter App</Text>
+                <Text style={{ width: "100%", fontWeight: "bold", fontSize: 20, textAlign: "center" }}>Mahjong Counter App</Text>
             </View>
-            <PlayerList players={players} editPlayer={handleEditPlayer}/>
-            <GamesList players={players} games={games} addGame={()=>setEditingRound(true)}/>
+            <PlayerList players={players} editPlayer={handleEditPlayer} />
+            <GamesList
+                players={players}
+                games={games}
+                handleAddRound={() => setEditingRound(true)}
+                handleDeleteRound={handleDeleteRound}
+            />
             {playerToEdit &&
                 <Formik
-                initialValues={playerToEdit}
-                onSubmit={()=>{}}
-                enableReinitialize
+                    initialValues={playerToEdit}
+                    onSubmit={() => { }}
+                    enableReinitialize
                 >
                     <Modal visible={editingPlayer} onDismiss={() => setEditingPlayer(false)} contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}>
-                        <PlayerEditingForm handleSubmit={handleSavePlayerEdits}/>
+                        <PlayerEditingForm handleSubmit={handleSavePlayerEdits} />
                     </Modal>
                 </Formik>
             }
@@ -83,7 +93,10 @@ export default function GameView(){
                 enableReinitialize
             >
                 <Modal visible={editingRound} onDismiss={() => setEditingRound(false)} contentContainerStyle={{ backgroundColor: 'white', padding: 20 }}>
-                    <RoundEditingForm handleSubmit={()=>{setEditingRound(false)}} players={players}/>
+                    <RoundEditingForm
+                        handleSubmit={handleAddRound}
+                        players={players}
+                    />
                 </Modal>
             </Formik>
         </>
